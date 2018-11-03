@@ -43,27 +43,47 @@ void quickSort( int low, int high)
 int main()
 {
     FILE *fp,*fp1;
+    fp1=fopen("degree.txt","w+");
     fp=fopen("facebook_combined.txt","r");
 
-    int i,j=0,x,num;
+    int i,j=0,x,temp=0,num,matrix[node+1][node+1];
 
-    for( i = 0; i < node; i++)
-        array[i][0]=i;
+    // for(i=0;i<node;i++)
+    //     array[i][0]=i;
     
     for(i=0;i<edges;i++)
     {
         fscanf(fp,"%d %d",&j,&x);
-        //printf("%d  %d\n",j,x);
-        ++array[j][1];
-        ++array[x][1];
+        matrix[j][x]=1;
+        matrix[x][j]=1;
+
+        // if(j==temp)
+        // {
+        //     num++;
+        // }
+        // else
+        // {
+        //    // fprintf(fp1,"%d  %d\n",temp,num);
+        //     array[temp][1]=num;
+        //     num=1;
+        //     temp=j;
+        // }
     }
-    fclose(fp);
-    quickSort(0,node-1);
-    fp1=fopen("degree.txt","w+");
     for(i=0;i<node;i++)
     {
-        fprintf(fp1,"%d %d\n",array[i][0],array[i][1]);
+        for(j=0;j<node;j++)
+        {
+            if(matrix[i][j]==1)
+                ++num;
+        }
+        array[i][0]=i;
+        array[i][1]=num;
+        num=0;
     }
-    fclose(fp1);
+    quickSort(0,node-1);
+    for(i=0;i<node;i++)
+    {
+        fprintf(fp1,"%d  %d\n",array[i][0],array[i][1]);
+    }
     return 0;
 }
